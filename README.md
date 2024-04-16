@@ -6,23 +6,23 @@ Students should follow the instructions in the student guide for this hack here:
 
 The contents of this folder/repo are listed below
 
-`` /.devcontainer ``
+`` /.devcontainer `` <br />
 This folder contains the configuration for these resources to be hosted in a GitHub Codespace.
 
-``/data``
+``/data`` <br />
 This folder contains the structured and unstructured data that will be used to complete the challenges of this hack
 
-``/notebooks``
+``/notebooks`` <br />
 This folder contains the Jupyter Notebooks you will run to complete the tasks of this hack. You must have a Jupyter Notebook runtime environment to run these files. GitHub Codespaces is the easiest way to get started. Instructions on how to set up a Jupyter Notebook runtime environment on your local workstation are also provided if you do not want to use GitHub Codespaces.
 
 See Challenge 00 of the student guide for this hack for more details.
 
-``.env.sample``
+``.env.sample`` <br />
 This is a sample ``.env`` file with the list of environment variables required by the Jupyter Notebooks for this hack. You should rename this file to ``.env`` and add your configuration values to it during the hack.
 
-``.gitignore``
+``.gitignore`` <br />
 This file has a list of files that Git should ignore and not commit to a Git repo if a student chooses to commit these files to a repo from their local workstation.
 
-``requirements.txt``
+``requirements.txt`` <br />
 This file is used for configuring Python libraries on your workstation.
 
