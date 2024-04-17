@@ -8,5 +8,22 @@
     "ghcr.io/devcontainers/features/powershell:1": {
       "modules": "az"
     }
-  }
+  },
+  "customizations": {
+      "codespaces": {
+        "openFiles": []
+      },
+      "vscode": {
+        "extensions": [
+          "ms-dotnettools.vscode-dotnet-runtime",
+          "ms-dotnettools.csdevkit",
+          "ms-dotnettools.csharp",
+          "ms-azuretools.vscode-azurefunctions",
+          "ms-vscode.vscode-typescript-next",
+          "ms-vscode.azure-account",
+          "ms-azuretools.vscode-azureresourcegroups",
+          "gruntfuggly.todo-tree"
+        ]
+      }
+    }
 }
