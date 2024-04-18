@@ -21,8 +21,7 @@
           "ms-azuretools.vscode-azurefunctions",
           "ms-vscode.vscode-typescript-next",
           "ms-vscode.azure-account",
-          "ms-azuretools.vscode-azureresourcegroups",
-          "gruntfuggly.todo-tree"
+          "ms-azuretools.vscode-azureresourcegroups"
         ]
       }
     }
