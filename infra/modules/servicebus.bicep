@@ -35,4 +35,5 @@ resource queuesToCreate 'Microsoft.ServiceBus/namespaces/queues@2021-11-01' = [f
     }
 }]
 
+#disable-next-line outputs-should-not-contain-secrets
 output connectionString string = listKeys('${serviceBus.id}/AuthorizationRules/RootManageSharedAccessKey', serviceBus.apiVersion).primaryConnectionString

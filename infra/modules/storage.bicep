@@ -30,4 +30,5 @@ resource containersToCreate 'Microsoft.Storage/storageAccounts/blobServices/cont
   }
 }]
 
+#disable-next-line outputs-should-not-contain-secrets
 output primaryKey string = account.listKeys().keys[0].value

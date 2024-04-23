@@ -16,5 +16,6 @@ resource redis 'Microsoft.Cache/Redis@2023-04-01' = {
   }
 }
 
+#disable-next-line outputs-should-not-contain-secrets
 output primaryKey string = redis.listKeys().primaryKey
 output hostname string = redis.properties.hostName

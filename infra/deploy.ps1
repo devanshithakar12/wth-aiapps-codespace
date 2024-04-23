@@ -38,6 +38,9 @@ param(
     [string]$ServicePrincipalPassword
 )
 
+# Make sure Bicep is in the path. GH Codespaces should have installed it during the provision process.
+$env:Path += ';~/.azure/bin'
+
 if ($UseServicePrincipal -eq $True) {
     $SecurePassword = ConvertTo-SecureString -String $ServicePrincipalPassword -AsPlainText -Force
     $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $ServicePrincipalId, $SecurePassword
@@ -52,7 +55,6 @@ else {
     }    
 }
 
-# Clear-Host
 Write-Host "`n`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
 Write-Host "created with love by the Americas GPS Tech Team!`n"
 
@@ -67,20 +69,24 @@ Write-Host -NoNewline "`t Resource Group: "
 Write-Host -ForegroundColor Yellow $ResourceGroupName
 Write-Host -NoNewline "`t         Region: "
 Write-Host -ForegroundColor Yellow $Location
-Write-Host -ForegroundColor Red "`nIf the subscription is incorrect, abort this script, point Azure Cloud Shell "
-Write-Host -ForegroundColor Red "to the correct one using Set-AzContext -Subscription <id>, and try again.`n"
+Write-Host -ForegroundColor Red "`nIf the subscription is incorrect, abort this script, point to the correct one "
+Write-Host -ForegroundColor Red "using Set-AzContext -Subscription <id>, and try again.`n"
 
 $r = Read-Host "Press Y to proceed to deploy the resouces using this parameters"
 
 if ($r -ne "Y") {
     Write-Host -ForegroundColor Red "Aborting deployment script."
-    return
+    [Environment]::Exit(1)
 }
 
 New-AzResourceGroup -Name $ResourceGroupName -Location $Location
 
 $result = New-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName -TemplateFile .\main.bicep
 
-
 $object = Get-Content -Raw template.json | ConvertFrom-Json
+
+$object.Values.AZURE_OPENAI_API_KEY = $result.Outputs.openAIKey.Value
+$object.Values.AZURE_OPENAI_ENDPOINT = $result.Outputs.openAIEndpoint.Value
+
+$object | ConvertTo-Json | Out-File -FilePath .\aaa.json
 

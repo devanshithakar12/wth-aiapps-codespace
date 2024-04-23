@@ -1,4 +1,6 @@
 var suffix = uniqueString(subscription().subscriptionId)
+
+#disable-next-line no-loc-expr-outside-params
 var location = resourceGroup().location
 
 module redis 'modules/redis.bicep' = {
@@ -43,6 +45,7 @@ output cosmosDBAddress string = cosmos.outputs.uri
 module openai 'modules/openai.bicep' = {
   name: 'openAIDeployment'
   params: {
+    #disable-next-line no-hardcoded-location    
     location: 'East US 2'
     name: 'openai-${suffix}'
     deployments: [

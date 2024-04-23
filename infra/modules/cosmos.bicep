@@ -76,5 +76,6 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
   }
 }]
 
+#disable-next-line outputs-should-not-contain-secrets
 output primaryMasterKey string = account.listKeys().primaryMasterKey
 output uri string = account.properties.documentEndpoint

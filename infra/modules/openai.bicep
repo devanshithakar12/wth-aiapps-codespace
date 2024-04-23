@@ -25,14 +25,19 @@ resource account 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
 resource deploymentsToCreate 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = [for deployment in deployments: {
   name: deployment.name
   parent: account
+  sku: {
+    name: 'Standard'
+    capacity: 1
+  }
   properties: {
     model: {
       format: 'OpenAI'
       name: deployment.name
-      version: deployment.version
+      version: deployment.version      
     }    
   }
 }]
 
+#disable-next-line outputs-should-not-contain-secrets
 output key1 string = account.listKeys().key1
 output endpoint string = account.properties.endpoint

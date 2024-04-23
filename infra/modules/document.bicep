@@ -15,5 +15,6 @@ resource account 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   }
 }
 
+#disable-next-line outputs-should-not-contain-secrets
 output key1 string = account.listKeys().key1
 output endpoint string = account.properties.endpoint
