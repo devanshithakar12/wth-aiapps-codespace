@@ -1,6 +1,9 @@
 @description('The name of the Azure CosmosDB.')
 param name string
 
+@description('The name of the Azure CosmosDB database.')
+param databaseName string
+
 @description('Location where the Azure CosmosDB will be created.')
 param location string
 
@@ -31,10 +34,10 @@ resource account 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
 
 resource database 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2022-05-15' = {
   parent: account
-  name: name
+  name: databaseName
   properties: {
     resource: {
-      id: name
+      id: databaseName
     }
   }
 }
@@ -78,4 +81,9 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
 
 #disable-next-line outputs-should-not-contain-secrets
 output primaryMasterKey string = account.listKeys().primaryMasterKey
+
+#disable-next-line outputs-should-not-contain-secrets
+output connectionString string = account.listConnectionStrings().connectionStrings[0].connectionString
+
 output uri string = account.properties.documentEndpoint
+output databaseName string = databaseName

@@ -1,4 +1,4 @@
-var suffix = uniqueString(subscription().subscriptionId)
+var suffix = uniqueString('${subscription().subscriptionId}-${resourceGroup().name}')
 
 #disable-next-line no-loc-expr-outside-params
 var location = resourceGroup().location
@@ -26,9 +26,10 @@ module serviceBus 'modules/servicebus.bicep' = {
 output serviceBusConnectionString string = serviceBus.outputs.connectionString
 
 module cosmos 'modules/cosmos.bicep' = {
-  name: 'cosmosDeployment'
+  name: 'cosmosDeployment'  
   params: {
     name: 'cosmos-${suffix}'
+    databaseName: 'contoso'
     location: location
     containers: [
       { name: 'yachts',           partitionKey: '/yachtId' }
@@ -41,6 +42,8 @@ module cosmos 'modules/cosmos.bicep' = {
 
 output cosmosDBPrimaryMasterKey string = cosmos.outputs.primaryMasterKey
 output cosmosDBAddress string = cosmos.outputs.uri
+output cosmosDBDatabaseName string = cosmos.outputs.databaseName
+output cosmosDBConnectionString string = cosmos.outputs.connectionString
 
 module openai 'modules/openai.bicep' = {
   name: 'openAIDeployment'
@@ -50,7 +53,7 @@ module openai 'modules/openai.bicep' = {
     name: 'openai-${suffix}'
     deployments: [
       { name: 'gpt-4',                    version: '1106-Preview' }
-      { name: 'text-embedding-3-small',   version: '1' }      
+      { name: 'text-embedding-ada-002',   version: '2' }      
     ]    
   }
 }
@@ -67,6 +70,7 @@ module search 'modules/search.bicep' = {
 }
 
 output searchKey string = search.outputs.primaryKey
+output searchEndpoint string = search.outputs.endpoint
 
 module document 'modules/document.bicep' = {
   name: 'documentDeployment'
@@ -88,6 +92,7 @@ module webjobs 'modules/storage.bicep' = {
 }
 
 output webjobsPrimaryKey string = webjobs.outputs.primaryKey
+output webjobsConnectionString string = webjobs.outputs.connectionString
 
 module storage 'modules/storage.bicep' = {
   name: 'storageDeployment'
@@ -99,3 +104,4 @@ module storage 'modules/storage.bicep' = {
 }
 
 output storagePrimaryKey string = storage.outputs.primaryKey
+output storageConnectionString string = storage.outputs.connectionString

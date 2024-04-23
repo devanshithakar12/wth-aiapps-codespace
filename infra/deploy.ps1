@@ -2,17 +2,26 @@
     .SYNOPSIS
     Deploy the resources needed for this What The Hack!
 
+    .PARAMETER $SubscriptionId
+    The subscription id where the resources will be deployed.
+
+    .PARAMETER $Location
+    Region where the resources will be deployed.
+
     .PARAMETER $ResourceGroupName
     The resource group where the resources will be deployed.
 
     .PARAMETER $TenantId
     The tenant id where the resources will be deployed.
 
-    .PARAMETER $SubscriptionId
-    The subscription id where the resources will be deployed.
+    .PARAMETER $UseServicePrincipal
+    Use service principal, instead of the current logged in user.
 
-    .PARAMETER $Location
-    Region where the resources will be deployed. Default is East US 2.
+    .PARAMETER $ServicePrincipalId
+    The service principal id.
+
+    .PARAMETER $ServicePrincipalPassword
+    The service principal password.
 #>
 
 param(
@@ -42,6 +51,8 @@ param(
 $env:Path += ';~/.azure/bin'
 
 if ($UseServicePrincipal -eq $True) {
+    Write-Host -ForegroundColor Yellow "`nUsing Service Principal to authenticate.`n"
+
     $SecurePassword = ConvertTo-SecureString -String $ServicePrincipalPassword -AsPlainText -Force
     $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $ServicePrincipalId, $SecurePassword
 
@@ -49,14 +60,16 @@ if ($UseServicePrincipal -eq $True) {
 }
 else {
     if ($env:CODESPACES -eq "true") {
+        Write-Host -ForegroundColor Yellow "`nLogging from GitHub Codespaces, using device authentication.`n"
         Connect-AzAccount -Subscription $SubscriptionId -UseDeviceAuthentication
     } else {
+        Write-Host -ForegroundColor Yellow "`nUsing standard authentication.`n"
         Connect-AzAccount -Subscription $SubscriptionId
     }    
 }
 
-Write-Host "`n`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
-Write-Host "created with love by the Americas GPS Tech Team!`n"
+Write-Host "`n`t`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
+Write-Host "`tcreated with love by the Americas GPS Tech Team!`n"
 
 $context = Get-AzContext
 
@@ -79,14 +92,50 @@ if ($r -ne "Y") {
     [Environment]::Exit(1)
 }
 
+Write-Host -ForegroundColor White "`n- Creating resource group: "
 New-AzResourceGroup -Name $ResourceGroupName -Location $Location
 
+Write-Host -ForegroundColor White "`n- Deploying resources: "
 $result = New-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName -TemplateFile .\main.bicep
 
-$object = Get-Content -Raw template.json | ConvertFrom-Json
+Write-Host -ForegroundColor White "`n- Creating the settings file:"
+$object = Get-Content -Raw ../Challenge-00/ContosoAIAppsBackend/local.settings.json.example | ConvertFrom-Json
 
+# Azure OpenAI settings
 $object.Values.AZURE_OPENAI_API_KEY = $result.Outputs.openAIKey.Value
 $object.Values.AZURE_OPENAI_ENDPOINT = $result.Outputs.openAIEndpoint.Value
+Write-Host -ForegroundColor Green "`t- Azure OpenAI"
 
-$object | ConvertTo-Json | Out-File -FilePath .\aaa.json
+# Azure AI Search
+$object.Values.AZURE_AI_SEARCH_ADMIN_KEY = $result.Outputs.searchKey.Value
+$object.Values.AZURE_AI_SEARCH_ENDPOINT = $result.Outputs.searchEndpoint.Value
+Write-Host -ForegroundColor Green "`t- Azure AI Search"
 
+# Azure Cache for Redis
+$object.Values.REDIS_HOST = $result.Outputs.redisHostname.Value
+$object.Values.REDIS_PASSWORD = $result.Outputs.redisPrimaryKey.Value
+Write-Host -ForegroundColor Green "`t- Azure Cache for Redis"
+
+# Azure CosmosDB
+$object.Values.COSMOS_CONNECTION = $result.Outputs.cosmosDBConnectionString.Value
+$object.Values.COSMOS_DATABASE_NAME = $result.Outputs.cosmosDBDatabaseName.Value
+Write-Host -ForegroundColor Green "`t- Azure CosmosDB"
+
+# Azure AI Document Intelligence
+$object.Values.DOCUMENT_INTELLIGENCE_ENDPOINT = $result.Outputs.documentEndpoint.Value
+$object.Values.DOCUMENT_INTELLIGENCE_KEY = $result.Outputs.documentKey.Value
+Write-Host -ForegroundColor Green "`t- Azure AI Document Intelligence"
+
+# Azure Storage Account for WebJobs
+$object.Values.AzureWebJobsStorage = $result.Outputs.webjobsConnectionString.Value
+Write-Host -ForegroundColor Green "`t- Azure Storage Account for WebJobs"
+
+# Azure Storage Account for Documents
+$object.Values.DOCUMENT_STORAGE = $result.Outputs.storageConnectionString.Value
+Write-Host -ForegroundColor Green "`t- Azure Storage Account for Documents"
+
+# Azure Service Bus
+$object.Values.SERVICE_BUS_CONNECTION_STRING = $result.Outputs.serviceBusConnectionString.Value
+Write-Host -ForegroundColor Green "`t- Azure Service Bus"
+
+$object | ConvertTo-Json | Out-File -FilePath ../Challenge-00/ContosoAIAppsBackend/local.settings.json

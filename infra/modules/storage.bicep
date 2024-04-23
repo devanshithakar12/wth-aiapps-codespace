@@ -32,3 +32,6 @@ resource containersToCreate 'Microsoft.Storage/storageAccounts/blobServices/cont
 
 #disable-next-line outputs-should-not-contain-secrets
 output primaryKey string = account.listKeys().keys[0].value
+
+#disable-next-line outputs-should-not-contain-secrets
+output connectionString string = 'DefaultEndpointsProtocol=https;AccountName=${name};AccountKey=${account.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
