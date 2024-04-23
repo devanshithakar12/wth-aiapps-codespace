@@ -11,9 +11,13 @@
   },
   "customizations": {
       "codespaces": {
+<<<<<<< HEAD
         "openFiles": [
           "068-AzureOpenAIApps/README.md"
         ]
+=======
+        "openFiles": []
+>>>>>>> a77586f74f9f2efd34b447eef1e6089bb077322f
       },
       "vscode": {
         "extensions": [
@@ -23,6 +27,7 @@
           "ms-azuretools.vscode-azurefunctions",
           "ms-vscode.vscode-typescript-next",
           "ms-vscode.azure-account",
+<<<<<<< HEAD
           "ms-azuretools.vscode-azureresourcegroups",
           "gruntfuggly.todo-tree"
         ]
@@ -32,4 +37,10 @@
     "cpus": 4
   }
   
+=======
+          "ms-azuretools.vscode-azureresourcegroups"
+        ]
+      }
+    }
+>>>>>>> a77586f74f9f2efd34b447eef1e6089bb077322f
 }
