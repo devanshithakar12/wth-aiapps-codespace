@@ -21,7 +21,8 @@
           "ms-azuretools.vscode-azurefunctions",
           "ms-vscode.vscode-typescript-next",
           "ms-vscode.azure-account",
-          "ms-azuretools.vscode-azureresourcegroups"
+          "ms-azuretools.vscode-azureresourcegroups",
+          "humao.rest-client"
         ]
       }
     },
