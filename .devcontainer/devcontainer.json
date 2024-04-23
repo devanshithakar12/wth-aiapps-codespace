@@ -22,7 +22,8 @@
           "ms-vscode.vscode-typescript-next",
           "ms-vscode.azure-account",
           "ms-azuretools.vscode-azureresourcegroups",
-          "humao.rest-client"
+          "humao.rest-client",
+          "ms-azuretools.vscode-bicep"
         ]
       }
     },
