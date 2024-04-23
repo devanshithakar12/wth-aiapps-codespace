@@ -25,7 +25,7 @@ param(
     [Parameter(Mandatory = $True)]
     [string]$ResourceGroupName,    
 
-    [Parameter(Mandatory = $True)]
+    [Parameter(Mandatory = $False)]
     [string]$TenantId,
     
     [Parameter(Mandatory = $False)]
@@ -35,7 +35,7 @@ param(
     [string]$ServicePrincipalId,
 
     [Parameter(Mandatory = $False)]
-    [securestring]$ServicePrincipalPassword
+    [string]$ServicePrincipalPassword
 )
 
 if ($UseServicePrincipal -eq $True) {
@@ -45,10 +45,14 @@ if ($UseServicePrincipal -eq $True) {
     Connect-AzAccount -ServicePrincipal -TenantId $TenantId -Subscription $SubscriptionId -Credential $Credential    
 }
 else {
-    Connect-AzAccount -Subscription $SubscriptionId
+    if ($env:CODESPACES -eq "true") {
+        Connect-AzAccount -Subscription $SubscriptionId -UseDeviceAuthentication
+    } else {
+        Connect-AzAccount -Subscription $SubscriptionId
+    }    
 }
 
-Clear-Host
+# Clear-Host
 Write-Host "`n`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
 Write-Host "created with love by the Americas GPS Tech Team!`n"
 

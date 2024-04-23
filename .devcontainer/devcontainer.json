@@ -1,7 +1,7 @@
 {
   "name": "What The Hack",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
-  "postCreateCommand": "npm install -g @angular/cli azure-functions-core-tools@4",
+  "postCreateCommand": "bash ./.devcontainer/postcreate.sh",
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
