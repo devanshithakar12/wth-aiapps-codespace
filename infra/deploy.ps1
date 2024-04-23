@@ -24,10 +24,10 @@
     The service principal password.
 
     .PARAMETER $OpenAILocation
-    Region where the OpenAI service should be deployed. East US 2 is the default one.
+    Region where the OpenAI service should be deployed.
     
     .PARAMETER $DocumentIntelligenceLocation
-    Region where the Document Intelligence service should be deployed. East US 2 is the default one.
+    Region where the Document Intelligence service should be deployed.
 #>
 
 param(
@@ -53,17 +53,35 @@ param(
     [string]$ServicePrincipalPassword,
 
     [Parameter(Mandatory = $False)]
-    [string]$OpenAILocation = "East US 2",
+    [string]$OpenAILocation,
     
     [Parameter(Mandatory = $False)]
-    [string]$DocumentIntelligenceLocation = "East US 2"
+    [string]$DocumentIntelligenceLocation
 )
 
 # Make sure Bicep is in the path. GH Codespaces should have installed it during the provision process.
 $env:Path += ';~/.azure/bin'
 
+Write-Host "`n`t`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
+Write-Host "`tcreated with love by the Americas GPS Tech Team!`n"
+
+if ($DocumentIntelligenceLocation -eq "") {
+    Write-Host -ForegroundColor Yellow "- Document Intelligence location not provided, using the same as the resources."
+    $DocumentIntelligenceLocation = $Location
+}
+
+if ($OpenAILocation -eq "") {
+    Write-Host -ForegroundColor Yellow "- OpenAI location not provided, using the same as the resources."
+    $OpenAILocation = $Location
+}
+
 if ($UseServicePrincipal -eq $True) {
-    Write-Host -ForegroundColor Yellow "`nUsing Service Principal to authenticate.`n"
+    Write-Host -ForegroundColor Yellow "- Using Service Principal to authenticate."
+    
+    if ($TenantId -eq "" -or  $ServicePrincipalId -eq $null -or $ServicePrincipalPassword -eq $null) {
+        Write-Host -ForegroundColor Red "`nERROR: Service principal id (-ServicePrincipalId), password (-ServicePrincipalPassword), and tenant id (-TenantId) are required when using service principal authentication.`n"
+        [Environment]::Exit(1)
+    }
 
     $SecurePassword = ConvertTo-SecureString -String $ServicePrincipalPassword -AsPlainText -Force
     $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $ServicePrincipalId, $SecurePassword
@@ -72,30 +90,30 @@ if ($UseServicePrincipal -eq $True) {
 }
 else {
     if ($env:CODESPACES -eq "true") {
-        Write-Host -ForegroundColor Yellow "`nLogging from GitHub Codespaces, using device authentication.`n"
+        Write-Host -ForegroundColor Yellow "- Logging from GitHub Codespaces, using device authentication."
         Connect-AzAccount -Subscription $SubscriptionId -UseDeviceAuthentication
     } else {
-        Write-Host -ForegroundColor Yellow "`nUsing standard authentication.`n"
+        Write-Host -ForegroundColor Yellow "- Using standard authentication."
         Connect-AzAccount -Subscription $SubscriptionId
     }    
 }
 
-Write-Host "`n`t`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
-Write-Host "`tcreated with love by the Americas GPS Tech Team!`n"
-
 $context = Get-AzContext
 
 Write-Host "The resources will be provisioned using the following parameters:"
-Write-Host -NoNewline "`t       TenantId: " 
+Write-Host -NoNewline "`t          TenantId: " 
 Write-Host -ForegroundColor Yellow $context.Tenant.Id
-Write-Host -NoNewline "`t SubscriptionId: "
+Write-Host -NoNewline "`t    SubscriptionId: "
 Write-Host -ForegroundColor Yellow $context.Subscription.Id
-Write-Host -NoNewline "`t Resource Group: "
+Write-Host -NoNewline "`t    Resource Group: "
 Write-Host -ForegroundColor Yellow $ResourceGroupName
-Write-Host -NoNewline "`t         Region: "
+Write-Host -NoNewline "`t            Region: "
 Write-Host -ForegroundColor Yellow $Location
-Write-Host -ForegroundColor Red "`nIf the subscription is incorrect, abort this script, point to the correct one "
-Write-Host -ForegroundColor Red "using Set-AzContext -Subscription <id>, and try again.`n"
+Write-Host -NoNewline "`t   OpenAI Location: "
+Write-Host -ForegroundColor Yellow $OpenAILocation
+Write-Host -NoNewline "`t Azure DI Location: "
+Write-Host -ForegroundColor Yellow $DocumentIntelligenceLocation
+Write-Host -ForegroundColor Red "`nIf any parameter is incorrect, abort this script, correct, and try again.`n"
 
 $r = Read-Host "Press Y to proceed to deploy the resouces using this parameters"
 
