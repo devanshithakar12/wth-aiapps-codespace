@@ -6,7 +6,7 @@
     "AzureWebJobsStorage": "",
     "COSMOS_CONNECTION": "",
     "COSMOS_DATABASE_NAME" : "contosodb1",
-    "CITRUS_STORAGE": "",
+    "DOCUMENT_STORAGE": "",
     "CITRUS_BUS": "",
     "REDIS_HOST": "contoso.redis.cache.windows.net",
     "REDIS_PORT": "6380",
