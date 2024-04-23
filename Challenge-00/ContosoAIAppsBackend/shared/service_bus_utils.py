@@ -7,7 +7,7 @@ from azure.servicebus import ServiceBusClient, ServiceBusSender, ServiceBusMessa
 class ServiceBusUtils:
 
     def __init__(self):
-        service_bus_connection_string = os.environ.get("CITRUS_BUS")
+        service_bus_connection_string = os.environ.get("SERVICE_BUS_CONNECTION_STRING")
         self.service_bus_client: ServiceBusClient = ServiceBusClient.from_connection_string(
             service_bus_connection_string)
 

@@ -1,7 +1,7 @@
 [
   {
-    "classifier_document_type": "f01-classification",
-    "extractor_model_name": "specify the value from Azure for your form-01 extractor model name",
+    "classifier_document_type": "f01-geography-climate",
+    "extractor_model_name": "f01-extractor",
     "model_description": "This is used to extract the contents of Form 01 using Azure Doc Intelligence",
     "fields": {
       "student_id": "student_id",
@@ -16,8 +16,8 @@
     }
   },
   {
-    "classifier_document_type": "f02-classification",
-    "extractor_model_name": "specify the value from Azure for your form-02 extractor model name",
+    "classifier_document_type": "f02-tourism-climate",
+    "extractor_model_name": "f02-extractor",
     "model_description": "This is used to extract the contents of Form 02 using Azure Doc Intelligence",
     "fields": {
       "student_id": "student_id",
@@ -32,8 +32,8 @@
     }
   },
   {
-    "classifier_document_type": "f03-classification",
-    "extractor_model_name": "specify the value from Azure for your form-03 extractor model name",
+    "classifier_document_type": "f03-geography-politics",
+    "extractor_model_name": "f03-extractor",
     "model_description": "This is used to extract the contents of Form 03 using Azure Doc Intelligence",
     "fields": {
       "student_id": "student_id",
@@ -49,8 +49,8 @@
     }
   },
   {
-    "classifier_document_type": "f04-classification",
-    "extractor_model_name": "specify the value from Azure for your form-04 extractor model name",
+    "classifier_document_type": "f04-meal-preferences",
+    "extractor_model_name": "f04-extractor",
     "model_description": "This is used to extract the contents of Form 04 (Meal Preferences + Allergy Declarations) using Azure Doc Intelligence",
     "fields": {
       "guest_full_name": "guest_full_name",
@@ -72,7 +72,7 @@
       "checkbox_allergens_gluten": "allergens_gluten",
       "checkbox_allergens_eggs": "allergens_eggs",
       "table_name": "temperature_preferences",
-      "table_column_header_meal_item": "meal_items",
+      "table_column_header_meal_item": "meal_item",
       "table_column_header_quantity": "quantity",
       "table_column_header_min_temp": "min_temperature",
       "table_column_header_max_temp": "max_temperature",
