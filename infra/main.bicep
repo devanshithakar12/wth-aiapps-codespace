@@ -3,6 +3,9 @@ var suffix = uniqueString('${subscription().subscriptionId}-${resourceGroup().na
 #disable-next-line no-loc-expr-outside-params
 var location = resourceGroup().location
 
+param openAILocation string
+param documentIntelligenceLocation string
+
 module redis 'modules/redis.bicep' = {
   name: 'redisDeployment'
   params: {
@@ -49,7 +52,7 @@ module openai 'modules/openai.bicep' = {
   name: 'openAIDeployment'
   params: {
     #disable-next-line no-hardcoded-location    
-    location: 'East US 2'
+    location: openAILocation
     name: 'openai-${suffix}'
     deployments: [
       { name: 'gpt-4',                    version: '1106-Preview' }
@@ -76,7 +79,7 @@ module document 'modules/document.bicep' = {
   name: 'documentDeployment'
   params: {
     name: 'document-${suffix}'
-    location: location
+    location: documentIntelligenceLocation
   }
 }
 

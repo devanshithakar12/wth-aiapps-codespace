@@ -22,6 +22,12 @@
 
     .PARAMETER $ServicePrincipalPassword
     The service principal password.
+
+    .PARAMETER $OpenAILocation
+    Region where the OpenAI service should be deployed. East US 2 is the default one.
+    
+    .PARAMETER $DocumentIntelligenceLocation
+    Region where the Document Intelligence service should be deployed. East US 2 is the default one.
 #>
 
 param(
@@ -44,7 +50,13 @@ param(
     [string]$ServicePrincipalId,
 
     [Parameter(Mandatory = $False)]
-    [string]$ServicePrincipalPassword
+    [string]$ServicePrincipalPassword,
+
+    [Parameter(Mandatory = $False)]
+    [string]$OpenAILocation = "East US 2",
+    
+    [Parameter(Mandatory = $False)]
+    [string]$DocumentIntelligenceLocation = "East US 2"
 )
 
 # Make sure Bicep is in the path. GH Codespaces should have installed it during the provision process.
@@ -96,7 +108,7 @@ Write-Host -ForegroundColor White "`n- Creating resource group: "
 New-AzResourceGroup -Name $ResourceGroupName -Location $Location
 
 Write-Host -ForegroundColor White "`n- Deploying resources: "
-$result = New-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName -TemplateFile .\main.bicep
+$result = New-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName -TemplateFile .\main.bicep -openAILocation $OpenAILocation -documentIntelligenceLocation $DocumentIntelligenceLocation
 
 Write-Host -ForegroundColor White "`n- Creating the settings file:"
 $object = Get-Content -Raw ../Challenge-00/ContosoAIAppsBackend/local.settings.json.example | ConvertFrom-Json
