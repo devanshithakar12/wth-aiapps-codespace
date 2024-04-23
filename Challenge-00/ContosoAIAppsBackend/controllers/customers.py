@@ -4,7 +4,7 @@ import azure.functions as func
 from azure.functions import AuthLevel
 import json
 
-from models.customers import Customers
+from models.application_models import Customer
 from shared.function_utils import APISuccessOK
 
 customers_controller = func.Blueprint()
@@ -12,7 +12,7 @@ customers_controller = func.Blueprint()
 
 @customers_controller.function_name("customers_controller")
 @customers_controller.route(route="customers/{customerId?}", methods=["GET", "PUT", "POST", "DELETE"],
-                            auth_level=AuthLevel.ANONYMOUS)
+                            auth_level=AuthLevel.FUNCTION)
 def customers_handler(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
