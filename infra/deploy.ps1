@@ -60,7 +60,7 @@ param(
 )
 
 # Make sure Bicep is in the path. GH Codespaces should have installed it during the provision process.
-$env:Path += ';~/.azure/bin'
+$env:Path += ':/home/vscode/.azure/bin'
 
 Write-Host "`n`t`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
 Write-Host "`tcreated with love by the Americas GPS Tech Team!`n"
