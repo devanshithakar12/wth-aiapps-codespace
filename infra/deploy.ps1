@@ -66,13 +66,13 @@ Write-Host "`n`t`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
 Write-Host "`tcreated with love by the Americas GPS Tech Team!`n"
 
 if ($DocumentIntelligenceLocation -eq "") {
-    Write-Host -ForegroundColor Yellow "- Document Intelligence location not provided, using the same as the resources."
-    $DocumentIntelligenceLocation = $Location
+    Write-Host -ForegroundColor Yellow "- Document Intelligence location not provided, using East US."
+    $DocumentIntelligenceLocation = "East US"
 }
 
 if ($OpenAILocation -eq "") {
-    Write-Host -ForegroundColor Yellow "- OpenAI location not provided, using the same as the resources."
-    $OpenAILocation = $Location
+    Write-Host -ForegroundColor Yellow "- OpenAI location not provided, using East US 2."
+    $OpenAILocation = "East US 2"
 }
 
 if ($UseServicePrincipal -eq $True) {
@@ -113,7 +113,10 @@ Write-Host -NoNewline "`t   OpenAI Location: "
 Write-Host -ForegroundColor Yellow $OpenAILocation
 Write-Host -NoNewline "`t Azure DI Location: "
 Write-Host -ForegroundColor Yellow $DocumentIntelligenceLocation
-Write-Host -ForegroundColor Red "`nIf any parameter is incorrect, abort this script, correct, and try again.`n"
+Write-Host -ForegroundColor Red "`nIf any parameter is incorrect, abort this script, correct, and try again."
+Write-Host -ForegroundColor White "It will take around " -NoNewline 
+Write-Host -ForegroundColor Green "15 minutes " -NoNewline
+Write-Host -ForegroundColor White "to deploy all resources. You can monitor the progress from the deployments page in the resource group in Azure Portal.`n"
 
 $r = Read-Host "Press Y to proceed to deploy the resouces using this parameters"
 
@@ -121,6 +124,8 @@ if ($r -ne "Y") {
     Write-Host -ForegroundColor Red "Aborting deployment script."
     [Environment]::Exit(1)
 }
+
+$start = Get-Date
 
 Write-Host -ForegroundColor White "`n- Creating resource group: "
 New-AzResourceGroup -Name $ResourceGroupName -Location $Location
@@ -169,3 +174,5 @@ $object.Values.SERVICE_BUS_CONNECTION_STRING = $result.Outputs.serviceBusConnect
 Write-Host -ForegroundColor Green "`t- Azure Service Bus"
 
 $object | ConvertTo-Json | Out-File -FilePath ../Challenge-00/ContosoAIAppsBackend/local.settings.json
+
+Write-Host "`nThe deployment took: " (New-TimeSpan –Start $start –End (Get-Date)).TotalSeconds " seconds."

@@ -2,7 +2,7 @@
 param name string
 
 @description('Location where the Azure Document Intelligence will be created.')
-param location string = 'East US'
+param location string
 
 resource account 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   name: name

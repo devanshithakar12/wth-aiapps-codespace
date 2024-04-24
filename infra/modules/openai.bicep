@@ -2,7 +2,7 @@
 param name string
 
 @description('Location where the Azure Open AI will be created.')
-param location string = 'East US 2'
+param location string
 
 @description('List of model deployments to create.')
 param deployments array = []
