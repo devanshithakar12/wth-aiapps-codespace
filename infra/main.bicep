@@ -108,3 +108,13 @@ module storage 'modules/storage.bicep' = {
 
 output storagePrimaryKey string = storage.outputs.primaryKey
 output storageConnectionString string = storage.outputs.connectionString
+
+module appinsights 'modules/appinsights.bicep' = {
+  name: 'appInsightsDeployment'
+  params: {    
+    name: 'appinsights-${suffix}'
+    location: location
+  }
+}
+
+output appInsightsConnectionString string = appinsights.outputs.connectionString

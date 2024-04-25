@@ -24,10 +24,10 @@
     The service principal password.
 
     .PARAMETER $OpenAILocation
-    Region where the OpenAI service should be deployed.
+    Region where the OpenAI service should be deployed. Default to East US 2.
     
     .PARAMETER $DocumentIntelligenceLocation
-    Region where the Document Intelligence service should be deployed.
+    Region where the Document Intelligence service should be deployed. Default to East US.
 #>
 
 param(
@@ -59,8 +59,13 @@ param(
     [string]$DocumentIntelligenceLocation
 )
 
-# Make sure Bicep is in the path. GH Codespaces should have installed it during the provision process.
-$env:Path += ':/home/vscode/.azure/bin'
+if ((Get-Command -Name "bicep" -ErrorAction SilentlyContinue) -eq $null) {
+    Write-Host -ForegroundColor Red "`nERROR: Bicep CLI not found in path. Make sure you have installed and try again."
+    Write-Host -ForegroundColor Red "ERROR: Try running " -NoNewline
+    Write-Host -ForegroundColor Green "az bicep install" -NoNewline
+    Write-Host -ForegroundColor Red " to install. More information: https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install`n"
+    [Environment]::Exit(1)
+}
 
 Write-Host "`n`t`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
 Write-Host "`tcreated with love by the Americas GPS Tech Team!`n"
@@ -99,6 +104,11 @@ else {
 }
 
 $context = Get-AzContext
+
+if ($context.Subscription.Id -ne $SubscriptionId) {
+    Write-Host -ForegroundColor Red "`nERROR: Your context is not pointing to the specified subscription.`n"
+    [Environment]::Exit(1)
+}
 
 Write-Host "The resources will be provisioned using the following parameters:"
 Write-Host -NoNewline "`t          TenantId: " 
@@ -169,10 +179,14 @@ Write-Host -ForegroundColor Green "`t- Azure Storage Account for WebJobs"
 $object.Values.DOCUMENT_STORAGE = $result.Outputs.storageConnectionString.Value
 Write-Host -ForegroundColor Green "`t- Azure Storage Account for Documents"
 
+# Azure Application Insights
+$object.Values.APPLICATIONINSIGHTS_CONNECTION_STRING = $result.Outputs.appInsightsConnectionString.Value
+Write-Host -ForegroundColor Green "`t- Azure Application Insights"
+
 # Azure Service Bus
 $object.Values.SERVICE_BUS_CONNECTION_STRING = $result.Outputs.serviceBusConnectionString.Value
 Write-Host -ForegroundColor Green "`t- Azure Service Bus"
 
 $object | ConvertTo-Json | Out-File -FilePath ../Challenge-00/ContosoAIAppsBackend/local.settings.json
 
-Write-Host "`nThe deployment took: " (New-TimeSpan –Start $start –End (Get-Date)).TotalSeconds " seconds."
+Write-Host "`nThe deployment took:" (New-TimeSpan –Start $start –End (Get-Date)).TotalSeconds "seconds."
