@@ -2,6 +2,7 @@
   "name": "What The Hack AI Apps",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
   "onCreateCommand": "npm install -g @angular/cli azure-functions-core-tools@4",
+  "postCreateCommand": "bash .devcontainer/postCreateCommands.sh",
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {
       "installBicep": true
@@ -9,7 +10,8 @@
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/powershell:1": {
       "modules": "az"
-    }
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "customizations": {
     "codespaces": {
@@ -31,5 +33,7 @@
   },
   "hostRequirements": {
     "cpus": 2
-  }
+  },
+  "forwardPorts": [7072],
+  "portsAttributes": { "7072": { "label": "backend" } }
 }

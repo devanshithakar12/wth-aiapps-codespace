@@ -5,11 +5,11 @@
     .PARAMETER $SubscriptionId
     The subscription id where the resources will be deployed.
 
-    .PARAMETER $Location
-    Region where the resources will be deployed.
-
     .PARAMETER $ResourceGroupName
     The resource group where the resources will be deployed.
+
+    .PARAMETER $Location
+    Region where the resources will be deployed. Default to East US 2.
 
     .PARAMETER $TenantId
     The tenant id where the resources will be deployed.
@@ -35,10 +35,10 @@ param(
     [string]$SubscriptionId,
 
     [Parameter(Mandatory = $True)]
-    [string]$Location,
-
-    [Parameter(Mandatory = $True)]
     [string]$ResourceGroupName,    
+
+    [Parameter(Mandatory = $False)]
+    [string]$Location,
 
     [Parameter(Mandatory = $False)]
     [string]$TenantId,
@@ -69,6 +69,11 @@ if ((Get-Command -Name "bicep" -ErrorAction SilentlyContinue) -eq $null) {
 
 Write-Host "`n`t`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
 Write-Host "`tcreated with love by the Americas GPS Tech Team!`n"
+
+if ($Location -eq "") {
+    Write-Host -ForegroundColor Yellow "- Location not provided, using East US 2."
+    $Location = "East US 2"
+}
 
 if ($DocumentIntelligenceLocation -eq "") {
     Write-Host -ForegroundColor Yellow "- Document Intelligence location not provided, using East US."
