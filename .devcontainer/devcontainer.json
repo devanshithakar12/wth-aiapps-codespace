@@ -2,7 +2,7 @@
   "name": "What The Hack AI Apps",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
   "onCreateCommand": "npm install -g @angular/cli azure-functions-core-tools@4",
-  "postStartCommand": "bash .devcontainer/postCreateCommands.sh",
+  "postStartCommand": "bash .devcontainer/postStartCommands.sh",
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {
       "installBicep": true
