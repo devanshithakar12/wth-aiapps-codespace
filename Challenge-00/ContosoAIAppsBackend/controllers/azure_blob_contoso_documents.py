@@ -1,9 +1,7 @@
 import logging
-import azure.functions as func
-from azure.functions import AuthLevel
-import json
 import os
 
+import azure.functions as func
 from azure.search.documents.indexes.models import SimpleField, SearchFieldDataType, SearchableField, SearchField
 from langchain_community.vectorstores.azuresearch import AzureSearch
 from langchain_core.documents import Document
@@ -11,6 +9,9 @@ from langchain_openai import AzureOpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from shared.ai_search_utils import AISearchUtils
+from shared.crypto_utils import CryptoUtils
+from shared.logging_utils import LoggingUtils
+from shared.redis_utils import RedisUtil
 
 azure_blob_controller = func.Blueprint()
 
@@ -25,9 +26,36 @@ def azure_blob_handler(contosostream: func.InputStream):
     logging.info(contosostream.name)
     logging.info(contosostream.length)
 
+    source_identifier = contosostream.name
     blob_content = contosostream.read().decode(file_content_encoding)
+
     logging.info(blob_content)
 
+    redis_util = RedisUtil()
+
+    redis_lookup_key = "document_embeddings_cache_{}".format(source_identifier)
+    cache_exists = redis_util.exists(redis_lookup_key)
+
+    document_redis_sha1_hash = redis_util.get(redis_lookup_key)
+    blob_document_hash = CryptoUtils.sha1_hash_string(blob_content)
+
+    compute_embeddings_on_if_necessary = int(os.environ.get("COMPUTE_EMBEDDINGS_ONLY_IF_NECESSARY", "0"))
+    check_hash: bool = compute_embeddings_on_if_necessary == 1
+
+    if check_hash and cache_exists and blob_document_hash == document_redis_sha1_hash:
+        print("Hash already exists. Ignoring this trigger. No embedding will be computed.")
+        custom_event = {"filename": source_identifier, "hash": document_redis_sha1_hash}
+        event_name = "SKIP_DOCUMENT_EMBEDDING_COMPUTE"
+        LoggingUtils.track_event(event_name, custom_event)
+    else:
+        print("Hash does not exist. Processing this trigger to compute the embeddings")
+        custom_event = {"filename": source_identifier, "hash": document_redis_sha1_hash}
+        event_name = "PROCESS_DOCUMENT_EMBEDDING_COMPUTE"
+        LoggingUtils.track_event(event_name, custom_event)
+        process_blob_contents(blob_content, source_identifier)
+
+
+def process_blob_contents(blob_content: str, source_identifier: str):
     contoso_documents_index_name = os.environ.get('AZURE_AI_SEARCH_CONTOSO_DOCUMENTS_INDEX_NAME')
     azure_openai_endpoint = os.environ.get('AZURE_OPENAI_ENDPOINT', '')
     azure_openai_api_key = os.environ.get('AZURE_OPENAI_API_KEY')
@@ -38,8 +66,6 @@ def azure_blob_handler(contosostream: func.InputStream):
     vector_store_admin_key = os.environ.get('AZURE_AI_SEARCH_ADMIN_KEY')
 
     ai_search_util = AISearchUtils(contoso_documents_index_name)
-
-    source_identifier = contosostream.name
 
     langchain_embeddings_object = AzureOpenAIEmbeddings(
         azure_deployment=azure_openai_embedding_deployment,
