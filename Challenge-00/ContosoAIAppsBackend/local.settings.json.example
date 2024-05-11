@@ -29,7 +29,8 @@
     "LLM_QUOTA_ENFORCEMENT": "0",
     "LLM_QUOTA_ENFORCEMENT_WINDOW_SECONDS": "60",
     "LLM_QUOTA_ENFORCEMENT_MAX_TRANSACTIONS": "2",
-    "LLM_QUOTA_ENFORCEMENT_COOL_DOWN_SECONDS": "180"
+    "LLM_QUOTA_ENFORCEMENT_COOL_DOWN_SECONDS": "180",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=xxxxxxxx-xxxx-xxxx-xxx-xxxxxxx;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=xxxxx"  
   },
   "Host": {
     "LocalHttpPort": 7072,
