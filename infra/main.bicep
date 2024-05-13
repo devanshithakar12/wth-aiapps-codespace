@@ -22,7 +22,7 @@ module serviceBus 'modules/servicebus.bicep' = {
   params: {
     name: 'sbus-${suffix}'
     location: location
-    queues: ['orange', 'lemon', 'grapfruit', 'tangerine']    
+    queues: ['orange', 'lemon', 'grapefruit', 'tangerine']    
   }
 }
 
