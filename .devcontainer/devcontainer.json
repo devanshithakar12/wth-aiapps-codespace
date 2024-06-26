@@ -1,6 +1,6 @@
 {
   "name": "What The Hack AI Apps",
-  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "image": "mcr.microsoft.com/devcontainers/python:dev-3.11",
   "onCreateCommand": "npm install -g @angular/cli azure-functions-core-tools@4",
   "postAttachCommand": "bash .devcontainer/postAttachCommands.sh",
   "features": {
