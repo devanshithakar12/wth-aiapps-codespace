@@ -3,12 +3,12 @@
         "type": "function",
         "function": {
             "name": "retrieve_guest_activity_preferences_and_requests",
-            "description": "This is where the function description should be specified. Be very specific",
+            "description": "Retrieves the activities the guest is interested in as well as the list of activities the guest would like to make a reservation",
             "parameters": {
                 "type": "object",
                 "properties": {
                   "customer_email_address": {
-                      "type": "data type goes here",
+                      "type": "string",
                       "format": "email",
                       "description": "The email address of the customer"
                   }
@@ -21,12 +21,12 @@
         "type": "function",
         "function": {
             "name": "guest_has_activity_preferences_and_requests",
-            "description": "This is where the function description should be specified. Be very specific",
+            "description": "Returns True if the customer has a profile registration for activities and reservation requests and False otherwise",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "customer_email_address": {
-                        "type": "data type goes here",
+                        "type": "string",
                         "format": "email",
                         "description": "The email address of the customer"
                     }
@@ -39,7 +39,7 @@
           "type": "function",
           "function": {
               "name": "list_available_activities",
-              "description": "This is where the function description should be specified. Be very specific",
+              "description": "Returns a list of activities and their descriptions for activities tourists can do during their visit to Contoso Islands",
               "parameters": {
                   "type": "object",
                   "properties": {}
