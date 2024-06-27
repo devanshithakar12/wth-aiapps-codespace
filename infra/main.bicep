@@ -102,7 +102,7 @@ module storage 'modules/storage.bicep' = {
   params: {    
     name: 'storage${suffix}'
     location: location
-    containers: [ 'contoso-civics-all-forms', 'f01-geo-climate', 'f02-tour-economy', 'f03-gov-politics', 'f04-activity-preferences', 'submissions', 'government' ]
+    containers: [ 'classifications', 'f01-geo-climate', 'f02-tour-economy', 'f03-gov-politics', 'f04-activity-preferences', 'submissions', 'government' ]
   }
 }
 
