@@ -3,12 +3,12 @@
         "type": "function",
         "function": {
             "name": "get_information",
-            "description": "Retrieves answers to relevant questions about the country Contoso Islands",
+            "description": "This is where the function description should be specified. Be very specific",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "query": {
-                        "type": "string",
+                        "type": "data type goes here",
                         "description": "The question about Contoso Islands"
                     }
                 },

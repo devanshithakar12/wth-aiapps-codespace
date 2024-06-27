@@ -3,12 +3,12 @@
         "type": "function",
         "function": {
             "name": "check_if_customer_account_exists",
-            "description": "Checks if the customer has a bank account",
+            "description": "This is where the function description should be specified. Be very specific",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "customer_email_address": {
-                        "type": "string",
+                        "type": "data type goes here",
                         "format": "email",
                         "description": "The email address of the customer used to look if the account exists"
                     }
@@ -21,12 +21,12 @@
         "type": "function",
         "function": {
             "name": "get_customer_account_details",
-            "description": "Retrieves the customer profile details such as the first name and last name of the customer",
+            "description": "This is where the function description should be specified. Be very specific",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "customer_email_address": {
-                        "type": "string",
+                        "type": "data type goes here",
                         "format": "email",
                         "description": "The email address of the customer used to look if the account exists"
                     }
@@ -39,21 +39,21 @@
         "type": "function",
         "function": {
             "name": "create_customer_account",
-            "description": "Creates a new customer account using the customer's email, first name and last name of the customer",
+            "description": "This is where the function description should be specified. Be very specific",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "customer_email": {
-                        "type": "string",
+                        "type": "data type goes here",
                         "format": "email",
                         "description": "The email address of the customer"
                     },
                     "first_name": {
-                        "type": "string",
+                        "type": "data type goes here",
                         "description": "The first name of the customer"
                     },
                     "last_name": {
-                        "type": "string",
+                        "type": "data type goes here",
                         "description": "The last name of the customer"
                     }
                 },
@@ -65,12 +65,12 @@
         "type": "function",
         "function": {
             "name": "get_customer_account_balance",
-            "description": "Returns the available balance in the customer's bank account in US dollars",
+            "description": "This is where the function description should be specified. Be very specific",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "customer_email": {
-                        "type": "string",
+                        "type": "data type goes here",
                         "format": "email",
                         "description": "The email address of the customer"
                     }
@@ -83,17 +83,17 @@
         "type": "function",
         "function": {
             "name": "make_bank_account_deposit",
-            "description": "Makes a deposit into the customer's bank account",
+            "description": "This is where the function description should be specified. Be very specific",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "customer_email": {
-                        "type": "string",
+                        "type": "data type goes here",
                         "format": "email",
                         "description": "The email address of the customer"
                     },
                     "deposit_amount": {
-                        "type": "number",
+                        "type": "data type goes here",
                         "description": "The amount of money to deposit in the customer's bank account in US dollars."
                     }
                 },
@@ -105,17 +105,17 @@
         "type": "function",
         "function": {
             "name": "make_bank_account_withdrawal",
-            "description": "Makes a withdrawal from the customer's bank account",
+            "description": "This is where the function description should be specified. Be very specific",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "customer_email": {
-                        "type": "string",
+                        "type": "data type goes here",
                         "format": "email",
                         "description": "The email address of the customer"
                     },
                     "withdrawal_amount": {
-                        "type": "number",
+                        "type": "data type goes here",
                         "description": "The amount of money to withdraw from the customer's bank account in US dollars."
                     }
                 },

@@ -3,12 +3,12 @@
       "type": "function",
       "function": {
           "name": "get_yacht_details",
-          "description": "Retrieves the details of the yacht such as name, price, maximum capacity and description",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                   "yacht_id": {
-                    "type": "string",
+                    "type": "data type goes here",
                     "enum": ["100", "200","300","400","500"],
                     "description": "The yacht id for the yacht"
                   }
@@ -21,12 +21,12 @@
       "type": "function",
       "function": {
           "name": "check_if_customer_account_exists",
-          "description": "Returns True if the customer account exists and False otherwise",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                   "customer_email_address": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "format": "email",
                       "description": "The email address of the customer"
                   }
@@ -39,12 +39,12 @@
       "type": "function",
       "function": {
           "name": "calculate_reservation_grand_total_amount",
-          "description": "Returns a floating point number representing the total cost for the yacht reservation in US dollars",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                   "yacht_id": {
-                    "type": "string",
+                    "type": "data type goes here",
                     "enum": ["100", "200","300","400","500"],
                     "description": "The yacht id for the yacht"
                   },
@@ -61,12 +61,12 @@
       "type": "function",
       "function": {
           "name": "yacht_travel_party_size_within_capacity",
-          "description": "Checks if the number of passengers is within the capacity of the yacht. Returns True if the yacht can hold the number of passengers and False otherwise",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                   "yacht_id": {
-                    "type": "string",
+                    "type": "data type goes here",
                     "enum": ["100", "200","300","400","500"],
                     "description": "The yacht id for the yacht"
                   },
@@ -83,12 +83,12 @@
       "type": "function",
       "function": {
           "name": "get_bank_account_balance",
-          "description": "Retrieves the current bank account balance of the customer in US dollars",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                   "customer_email_address": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "format": "email",
                       "description": "The email address of the customer"
                   }
@@ -101,16 +101,16 @@
       "type": "function",
       "function": {
           "name": "bank_account_balance_is_sufficient",
-          "description": "Returns True if the bank account balance of the customer is sufficient for the yacht reservation",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                   "bank_account_balance": {
-                      "type": "number",
+                      "type": "data type goes here",
                       "description": "The account balance of the customer in US dollars"
                   },
                 "reservation_total": {
-                      "type": "number",
+                      "type": "data type goes here",
                       "description": "The total cost of the yacht reservation in US dollars"
                   }
               },
@@ -122,7 +122,7 @@
       "type": "function",
       "function": {
           "name": "get_valid_reservation_search_dates",
-          "description": "Returns all the valid yacht reservation dates in ISO format yyyy-mm-dd format",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {}
@@ -133,17 +133,17 @@
       "type": "function",
       "function": {
           "name": "yacht_is_available_for_date",
-          "description": "Checks if a specific yacht is available for reservations on a specific date in ISO 8601 format YYYY-MM-DD format",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                   "yacht_id": {
-                    "type": "string",
+                    "type": "data type goes here",
                     "enum": ["100", "200","300","400","500"],
                     "description": "The yacht id for the yacht"
                   },
                 "search_date": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "format": "date",
                       "description": "The date the customer is looking to make a yacht reservation in YYYY-MM-DD format"
                   }
@@ -156,12 +156,12 @@
       "type": "function",
       "function": {
           "name": "is_valid_search_date",
-          "description": "Checks if yacht reservations can be made on a specific date in ISO 8601 format YYYY-MM-DD format",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                 "search_date": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "format": "date",
                       "description": "The date the customer is looking to make a yacht reservation in YYYY-MM-DD format"
                   }
@@ -174,12 +174,12 @@
       "type": "function",
       "function": {
           "name": "get_yacht_availability_by_id",
-          "description": "Returns a list of dates a specific yacht id is available for reservations",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                   "yacht_id": {
-                    "type": "string",
+                    "type": "data type goes here",
                     "enum": ["100", "200","300","400","500"],
                     "description": "The yacht id for the yacht"
                   }
@@ -192,12 +192,12 @@
       "type": "function",
       "function": {
           "name": "get_yacht_availability_by_date",
-          "description": "Returns a list of yacht ids for yachts that are available for reservation for a specific date",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                 "search_date": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "format": "date",
                       "description": "The date the customer is looking to make a yacht reservation in YYYY-MM-DD format"
                   }
@@ -210,12 +210,12 @@
       "type": "function",
       "function": {
           "name": "yacht_reservation_exists",
-          "description": "Checks if a particular yacht reservation id exists. Returns True if the reservation exists and False otherwise",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                 "reservation_id": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "description": "The reservation id for the yacht reservation"
                   }
               },
@@ -227,12 +227,12 @@
       "type": "function",
       "function": {
           "name": "get_reservation_details",
-          "description": "Returns the details for a specific yacht reservation",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                 "reservation_id": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "description": "The reservation id for the yacht reservation"
                   }
               },
@@ -244,12 +244,12 @@
       "type": "function",
       "function": {
           "name": "cancel_yacht_reservation",
-          "description": "Cancels the yacht reservation. Returns True if successful and False otherwise",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                 "reservation_id": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "description": "The reservation id for the yacht reservation"
                   }
               },
@@ -261,12 +261,12 @@
       "type": "function",
       "function": {
           "name": "get_customer_yacht_reservations",
-          "description": "Returns a list of yacht reservations for a specific customer",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                 "customer_email_address": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "format": "email",
                       "description": "The email address of the customer"
                   }
@@ -279,27 +279,27 @@
       "type": "function",
       "function": {
           "name": "create_yacht_reservation",
-          "description": "Creates a new yacht reservation for the customer for a specific date and number of passengers",
+          "description": "This is where the function description should be specified. Be very specific",
           "parameters": {
               "type": "object",
               "properties": {
                 "yacht_id": {
-                    "type": "string",
+                    "type": "data type goes here",
                     "enum": ["100", "200","300","400","500"],
                     "description": "The yacht id for the yacht"
                   },
                 "reservation_date": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "format": "date",
                       "description": "The date the customer is looking to make a yacht reservation in YYYY-MM-DD format"
                   },
                 "customer_email": {
-                      "type": "string",
+                      "type": "data type goes here",
                       "format": "email",
                       "description": "The email address of the customer"
                   },
                 "passenger_count": {
-                      "type": "integer",
+                      "type": "data type goes here",
                       "description": "The number of passengers for the yacht reservation"
                   }
               },
