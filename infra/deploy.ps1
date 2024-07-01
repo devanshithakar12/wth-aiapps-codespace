@@ -149,7 +149,7 @@ Write-Host -ForegroundColor White "`n- Deploying resources: "
 $result = New-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName -TemplateFile .\main.bicep -openAILocation $OpenAILocation -documentIntelligenceLocation $DocumentIntelligenceLocation
 
 Write-Host -ForegroundColor White "`n- Creating the settings file:"
-$object = Get-Content -Raw ../Challenge-00/ContosoAIAppsBackend/local.settings.json.example | ConvertFrom-Json
+$object = Get-Content -Raw ../ContosoAIAppsBackend/local.settings.json.example | ConvertFrom-Json
 
 # Azure OpenAI settings
 $object.Values.AZURE_OPENAI_API_KEY = $result.Outputs.openAIKey.Value
@@ -192,6 +192,6 @@ Write-Host -ForegroundColor Green "`t- Azure Application Insights"
 $object.Values.SERVICE_BUS_CONNECTION_STRING = $result.Outputs.serviceBusConnectionString.Value
 Write-Host -ForegroundColor Green "`t- Azure Service Bus"
 
-$object | ConvertTo-Json | Out-File -FilePath ../Challenge-00/ContosoAIAppsBackend/local.settings.json
+$object | ConvertTo-Json | Out-File -FilePath ../ContosoAIAppsBackend/local.settings.json
 
 Write-Host "`nThe deployment took:" (New-TimeSpan –Start $start –End (Get-Date)).TotalSeconds "seconds."
