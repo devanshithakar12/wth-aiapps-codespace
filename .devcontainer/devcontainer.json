@@ -28,7 +28,8 @@
         "ms-vscode.azure-account",
         "ms-azuretools.vscode-azureresourcegroups",
         "humao.rest-client",
-        "ms-azuretools.vscode-bicep"
+        "ms-azuretools.vscode-bicep",
+        "adamraichu.pdf-viewer"
       ]
     }
   },
