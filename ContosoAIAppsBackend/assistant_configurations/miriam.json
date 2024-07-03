@@ -25,13 +25,13 @@
           "parameters": {
               "type": "object",
               "properties": {
-                  "customer_email_address": {
+                  "customer_email": {
                       "type": "data type goes here",
                       "format": "email",
                       "description": "The email address of the customer"
                   }
               },
-              "required": ["customer_email_address"]
+              "required": ["customer_email"]
           }
       }
   },
@@ -87,13 +87,13 @@
           "parameters": {
               "type": "object",
               "properties": {
-                  "customer_email_address": {
+                  "customer_email": {
                       "type": "data type goes here",
                       "format": "email",
                       "description": "The email address of the customer"
                   }
               },
-              "required": ["customer_email_address"]
+              "required": ["customer_email"]
           }
       }
   },
@@ -265,13 +265,13 @@
           "parameters": {
               "type": "object",
               "properties": {
-                "customer_email_address": {
+                "customer_email": {
                       "type": "data type goes here",
                       "format": "email",
                       "description": "The email address of the customer"
                   }
               },
-              "required": ["customer_email_address"]
+              "required": ["customer_email"]
           }
       }
   },
