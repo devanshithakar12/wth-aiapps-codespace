@@ -2,13 +2,13 @@ from shared.assistant_tools import serialize_assistant_response
 from shared.cosmos_db_utils import CosmosDbUtils
 
 
-def v_retrieve_guest_activity_preferences_and_requests(customer_email_address: str) -> str:
-    result = retrieve_guest_activity_preferences_and_requests(customer_email_address)
+def v_retrieve_guest_activity_preferences_and_requests(customer_email: str) -> str:
+    result = retrieve_guest_activity_preferences_and_requests(customer_email)
     return serialize_assistant_response(result)
 
 
-def v_guest_has_activity_preferences_and_requests(customer_email_address: str) -> str:
-    result = guest_has_activity_preferences_and_requests(customer_email_address)
+def v_guest_has_activity_preferences_and_requests(customer_email: str) -> str:
+    result = guest_has_activity_preferences_and_requests(customer_email)
     return serialize_assistant_response(result)
 
 
@@ -17,14 +17,14 @@ def v_list_available_activities() -> str:
     return serialize_assistant_response(result)
 
 
-def guest_has_activity_preferences_and_requests(customer_email_address: str) -> bool:
-    return retrieve_guest_activity_preferences_and_requests(customer_email_address) is not None
+def guest_has_activity_preferences_and_requests(customer_email: str) -> bool:
+    return retrieve_guest_activity_preferences_and_requests(customer_email) is not None
 
 
-def retrieve_guest_activity_preferences_and_requests(customer_email_address: str) -> object | None:
+def retrieve_guest_activity_preferences_and_requests(customer_email: str) -> object | None:
     cosmos_util = CosmosDbUtils("activitypreferences")
 
-    query = "SELECT * FROM a WHERE a.registrationId = '{}'".format(customer_email_address)
+    query = "SELECT * FROM a WHERE a.registrationId = '{}'".format(customer_email)
 
     retrieval_response = cosmos_util.query_container(query, enable_cross_partition_query=True)
 
