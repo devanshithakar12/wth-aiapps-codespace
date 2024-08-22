@@ -7,7 +7,7 @@ from typing import Iterable, Any
 
 from openai import AzureOpenAI as AIFluencyAzureOpenAI
 from openai.resources import Files
-from openai.types.beta import CodeInterpreterToolParam, RetrievalToolParam, FunctionToolParam
+from openai.types.beta import CodeInterpreterToolParam, FunctionToolParam
 from openai.types.beta.threads import Run
 
 from shared.redis_utils import RedisUtil
@@ -174,7 +174,7 @@ class AssistantUtil:
         return tool_outputs
 
     def register_tool_and_function_definitions(self, function_name: str,
-                                               tool_definition: CodeInterpreterToolParam | RetrievalToolParam | FunctionToolParam,
+                                               tool_definition: CodeInterpreterToolParam | FunctionToolParam,
                                                function_definition: Any = None):
 
         self.tool_definitions.append(tool_definition)
