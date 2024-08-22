@@ -284,18 +284,18 @@ def get_contoso_information(query: str) -> list[str]:
     return response
 
 
-def check_if_customer_account_exists(customer_email_address: str) -> bool:
+def check_if_customer_account_exists(customer_email: str) -> bool:
     """Returns True if customer account exists and False otherwise"""
 
-    response = get_customer_account_details(customer_email_address)
+    response = get_customer_account_details(customer_email)
 
     return response is not None
 
 
-def get_customer_account_details(customer_email_address: str) -> Customer | None:
+def get_customer_account_details(customer_email: str) -> Customer | None:
     """Returns True if customer account exists and False otherwise"""
 
-    query = f"SELECT * FROM c WHERE c.email = '{customer_email_address}'"
+    query = f"SELECT * FROM c WHERE c.email = '{customer_email}'"
 
     cosmos_util = CosmosDbUtils("customers")
 
