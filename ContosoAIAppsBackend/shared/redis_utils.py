@@ -78,7 +78,8 @@ class RedisUtil:
         deserialized_values: list = []
         for serialized_value in serialized_values:
             deserialized_value = json.loads(serialized_value)
-            deserialized_values.append(deserialized_value)
+            if not deserialized_values.__contains__(deserialized_value):
+                deserialized_values.append(deserialized_value)
         return deserialized_values
 
     def l_range_all(self, key):
