@@ -1,4 +1,5 @@
 local.settings.json
+document-intelligence-dictionary.json
 staging-*
 
 .idea
