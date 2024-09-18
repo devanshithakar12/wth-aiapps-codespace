@@ -16,7 +16,7 @@
     }
   },
   {
-    "classifier_document_type": "f02-tourism-climate",
+    "classifier_document_type": "f02-tourism-economy",
     "extractor_model_name": "f02-extractor",
     "model_description": "This is used to extract the contents of Form 02 using Azure Doc Intelligence",
     "fields": {
