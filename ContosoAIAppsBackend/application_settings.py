@@ -28,11 +28,11 @@ class AssistantConfig(TypedDict):
 
 
 class AssistantName(StrEnum):
-    ELIZABETH = 'elizabeth'
-    ESTHER = 'esther'
-    MIRIAM = 'miriam'
+    DONALD = 'donald'
+    CALLUM = 'callum'
+    VETA = 'veta'
     PRISCILLA = 'priscilla'
-    SARAH = 'sarah'
+    MURPHY = 'murphy'
     SOLOMON = 'solomon'
 
 

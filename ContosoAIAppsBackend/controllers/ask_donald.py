@@ -6,17 +6,17 @@ from azure.functions import AuthLevel
 
 from application_settings import ApplicationSettings, AssistantConfig, AssistantName
 from shared.assistant_tools import get_current_unix_timestamp
-from shared.assistant_tools_elizabeth import v_get_contoso_information
+from shared.assistant_tools_donald import v_get_contoso_information
 from shared.function_utils import APISuccessOK
 from shared.tool_utils import ToolUtils
 
-ask_elizabeth_controller = func.Blueprint()
+ask_donald_controller = func.Blueprint()
 
 
-@ask_elizabeth_controller.function_name("ask_elizabeth_assistant")
-@ask_elizabeth_controller.route(route="assistants-ask-elizabeth", methods=["POST"],
+@ask_donald_controller.function_name("ask_donald_assistant")
+@ask_donald_controller.route(route="assistants-ask-donald", methods=["POST"],
                                 auth_level=AuthLevel.ANONYMOUS)
-def ask_elizabeth(req: func.HttpRequest) -> func.HttpResponse:
+def ask_donald(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     headers = req.headers
@@ -25,12 +25,12 @@ def ask_elizabeth(req: func.HttpRequest) -> func.HttpResponse:
     user_question = body['message']
 
     settings = ApplicationSettings()
-    assistant_config: AssistantConfig = settings.get_assistant_config(assistant_name=AssistantName.ELIZABETH)
+    assistant_config: AssistantConfig = settings.get_assistant_config(assistant_name=AssistantName.DONALD)
 
     system_message = assistant_config["system_message"]
     tools_configuration = assistant_config["tools"]
 
-    util = ToolUtils(AssistantName.ELIZABETH, system_message, tools_configuration, conversation_id)
+    util = ToolUtils(AssistantName.DONALD, system_message, tools_configuration, conversation_id)
 
     util.register_tool_mapping("get_information", v_get_contoso_information)
 
@@ -45,7 +45,7 @@ def ask_elizabeth(req: func.HttpRequest) -> func.HttpResponse:
     current_timestamp = get_current_unix_timestamp()
     api_response = APISuccessOK(json_string)
 
-    final_response = (api_response.add_response_header("x-assistant-name", AssistantName.ELIZABETH)
+    final_response = (api_response.add_response_header("x-assistant-name", AssistantName.DONALD)
                       .add_response_header("x-conversation-id", conversation_id)
                       .add_response_header("x-response-id", current_timestamp))
 
