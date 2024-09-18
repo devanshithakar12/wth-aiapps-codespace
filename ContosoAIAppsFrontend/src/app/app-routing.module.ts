@@ -10,13 +10,13 @@ import {AskMurphyComponent} from "./ask-murphy/ask-murphy.component";
 
 const routes: Routes = [
   {path: '', component: ListAssistantsComponent, pathMatch: 'full'},
-  {path: 'list-assistants', component: ListAssistantsComponent},
-  {path: 'ask-donald', component: AskDonaldComponent},
-  {path: 'ask-callum', component: AskCallumComponent},
-  {path: 'ask-veta', component: AskVetaComponent},
-  {path: 'ask-priscilla', component: AskPriscillaComponent},
-  {path: 'ask-murphy', component: AskMurphyComponent},
-  {path: 'chat-bot', component: ChatbotComponent},
+  {path: 'list-assistants', component: ListAssistantsComponent, title: "List Assistants"},
+  {path: 'ask-donald', component: AskDonaldComponent, title: "Ask Donald"},
+  {path: 'ask-callum', component: AskCallumComponent, title: "Ask Callum"},
+  {path: 'ask-veta', component: AskVetaComponent, title: "Ask Veta"},
+  {path: 'ask-priscilla', component: AskPriscillaComponent, title: "Ask Priscilla"},
+  {path: 'ask-murphy', component: AskMurphyComponent, title: "Ask Murphy"},
+  {path: 'chat-bot', component: ChatbotComponent, title: "Chat "},
 ];
 
 @NgModule({
