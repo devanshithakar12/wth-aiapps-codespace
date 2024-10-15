@@ -194,4 +194,22 @@ Write-Host -ForegroundColor Green "`t- Azure Service Bus"
 
 $object | ConvertTo-Json | Out-File -FilePath ../ContosoAIAppsBackend/local.settings.json
 
+Write-Host -ForegroundColor White "`n- Copying files:"
+
+$storageContext = New-AzStorageContext -ConnectionString $result.Outputs.storageConnectionString.Value
+
+@{
+    "../artifacts/contoso-education/F01-Civics-Geography and Climate/"   = @("f01-geo-climate", "classifications");
+    "../artifacts/contoso-education/F02-Civics-Tourism and Economy/"     = @("f02-tour-economy", "classifications");
+    "../artifacts/contoso-education/F03-Civics-Government and Politics/" = @("f03-gov-politics", "classifications");
+    "../artifacts/contoso-education/F04-Activity-Preferences/"           = @("f04-activity-preferences", "classifications");
+}.GetEnumerator() | ForEach-Object {
+    $sourcePath = $_.Key
+
+    $_.Value | ForEach-Object {
+        Write-Host -ForegroundColor Green "`t- $sourcePath$"
+        Get-ChildItem -File -Path  $sourcePath | Set-AzStorageBlobContent -Context $storageContext -Force -Container $_ | Out-Null
+    }    
+}
+
 Write-Host "`nThe deployment took:" (New-TimeSpan –Start $start –End (Get-Date)).TotalSeconds "seconds."
