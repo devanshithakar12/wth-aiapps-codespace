@@ -64,7 +64,7 @@ if ((Get-Command -Name "bicep" -ErrorAction SilentlyContinue) -eq $null) {
     Write-Host -ForegroundColor Red "ERROR: Try running " -NoNewline
     Write-Host -ForegroundColor Green "az bicep install" -NoNewline
     Write-Host -ForegroundColor Red " to install. More information: https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install`n"
-    [Environment]::Exit(1)
+    exit 1
 }
 
 Write-Host "`n`t`tWHAT THE HACK - AZURE OPENAI APPS" -ForegroundColor Green
@@ -90,7 +90,7 @@ if ($UseServicePrincipal -eq $True) {
     
     if ($TenantId -eq "" -or  $ServicePrincipalId -eq $null -or $ServicePrincipalPassword -eq $null) {
         Write-Host -ForegroundColor Red "`nERROR: Service principal id (-ServicePrincipalId), password (-ServicePrincipalPassword), and tenant id (-TenantId) are required when using service principal authentication.`n"
-        [Environment]::Exit(1)
+        exit 1
     }
 
     $SecurePassword = ConvertTo-SecureString -String $ServicePrincipalPassword -AsPlainText -Force
@@ -112,7 +112,7 @@ $context = Get-AzContext
 
 if ($context.Subscription.Id -ne $SubscriptionId) {
     Write-Host -ForegroundColor Red "`nERROR: Your context is not pointing to the specified subscription.`n"
-    [Environment]::Exit(1)
+    exit 1
 }
 
 Write-Host "The resources will be provisioned using the following parameters:"
@@ -137,7 +137,7 @@ $r = Read-Host "Press Y to proceed to deploy the resouces using this parameters"
 
 if ($r -ne "Y") {
     Write-Host -ForegroundColor Red "Aborting deployment script."
-    [Environment]::Exit(1)
+    exit 1
 }
 
 $start = Get-Date
@@ -147,6 +147,11 @@ New-AzResourceGroup -Name $ResourceGroupName -Location $Location
 
 Write-Host -ForegroundColor White "`n- Deploying resources: "
 $result = New-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName -TemplateFile .\main.bicep -openAILocation $OpenAILocation -documentIntelligenceLocation $DocumentIntelligenceLocation
+
+if ($result.ProvisioningState -ne "Succeeded") {
+    Write-Host -ForegroundColor DarkRed "`n`nERROR: Looks like there was an error with your Azure deployment. Please check the deployment details in the Azure portal for more information.`n`n"
+    exit 1
+}
 
 Write-Host -ForegroundColor White "`n- Creating the settings file:"
 $object = Get-Content -Raw ../ContosoAIAppsBackend/local.settings.json.example | ConvertFrom-Json
