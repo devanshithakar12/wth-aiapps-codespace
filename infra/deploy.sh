@@ -132,7 +132,20 @@ echo -e "\e[32mSettings file created successfully.\e[0m"
 # Copy files to Azure Storage
 echo -e "\n- Copying files:"
 storage_connection=$(echo "$outputs" | jq -r '.storageConnectionString.value')
-az storage blob upload-batch --source "../artifacts" --destination "classifications" --connection-string "$storage_connection" || error_exit "Failed to upload files."
+
+# Declare an associative array
+declare -A hashtable
+
+# Add key-value pairs to the hashtable
+hashtable["../artifacts/contoso-education/F01-Civics-Geography and Climate/"]="f01-geo-climate"
+hashtable["../artifacts/contoso-education/F02-Civics-Tourism and Economy/"]="f02-tour-economy"
+hashtable["../artifacts/contoso-education/F03-Civics-Government and Politics/"]="f03-gov-politics"
+hashtable["../artifacts/contoso-education/F04-Activity-Preferences/"]="f04-activity-preferences"
+
+# Iterate over the hashtable
+for sourceDir in "${!hashtable[@]}"; do
+    az storage blob upload-batch --overwrite --source "$sourceDir" --destination "classifications/"${hashtable[$sourceDir]} --connection-string "$storage_connection" || error_exit "Failed to upload files."
+done
 
 end=$(date +%s)
 echo -e "\nThe deployment took: $((end - start)) seconds."
