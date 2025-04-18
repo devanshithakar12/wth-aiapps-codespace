@@ -46,9 +46,13 @@ if [[ "$USE_SERVICE_PRINCIPAL" == true ]]; then
     if [[ -z "$TENANT_ID" || -z "$SERVICE_PRINCIPAL_ID" || -z "$SERVICE_PRINCIPAL_PASSWORD" ]]; then
         error_exit "Service Principal ID, Password, and Tenant ID are required for Service Principal authentication."
     fi
-    az login --service-principal -u "$SERVICE_PRINCIPAL_ID" -p "$SERVICE_PRINCIPAL_PASSWORD" --tenant "$TENANT_ID" || error_exit "Failed to authenticate using Service Principal."
+    if ! az account show > /dev/null 2>&1; then
+        az login --service-principal -u "$SERVICE_PRINCIPAL_ID" -p "$SERVICE_PRINCIPAL_PASSWORD" --tenant "$TENANT_ID" || error_exit "Failed to authenticate using Service Principal."
+    fi
 else
-    az login || error_exit "Failed to authenticate with Azure."
+    if ! az account show > /dev/null 2>&1; then
+        az login || error_exit "Failed to authenticate with Azure."
+    fi
 fi
 
 # Set the subscription
@@ -84,6 +88,7 @@ result=$(az deployment group create --resource-group "$RESOURCE_GROUP_NAME" --te
 
 # Extract outputs
 outputs=$(echo "$result" | jq -r '.properties.outputs')
+#echo $outputs
 
 # Create settings file
 echo -e "\n- Creating the settings file:"
@@ -132,6 +137,29 @@ echo -e "\e[32mSettings file created successfully.\e[0m"
 # Copy files to Azure Storage
 echo -e "\n- Copying files:"
 storage_connection=$(echo "$outputs" | jq -r '.storageConnectionString.value')
+COSMOS_DB_ACCOUNT=$(echo "$outputs" | jq -r '.cosmosDBAccount.value')
+STORAGE_ACCOUNT=$(echo "$outputs" | jq -r '.name.value')
+AZURE_AI_SEARCH=$(echo "$outputs" | jq -r '.searchName.value')
+
+#Workaround for FDPO MSFT internal subscriptions. 
+
+az storage account update -g $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT  --allow-shared-key-access true
+ 
+az storage account update \
+  --name ${STORAGE_ACCOUNT} \
+  --resource-group $RESOURCE_GROUP_NAME \
+  --public-network-access Enabled \
+  --default-action Allow
+
+  # Enable Public Network Access
+az cosmosdb update -g $RESOURCE_GROUP_NAME --name $COSMOS_DB_ACCOUNT --public-network-access Enabled 
+
+# Enable Local Authentication with Keys
+az resource update -g $RESOURCE_GROUP_NAME --name $COSMOS_DB_ACCOUNT --resource-type "Microsoft.DocumentDB/databaseAccounts" --set properties.disableLocalAuth=false
+
+az search service update --name $AZURE_AI_SEARCH --resource-group $RESOURCE_GROUP_NAME --public-access enabled --disable-local-auth false
+#End workaround
+
 
 # Declare an associative array
 declare -A hashtable
@@ -144,7 +172,7 @@ hashtable["../artifacts/contoso-education/F04-Activity-Preferences/"]="f04-activ
 
 # Iterate over the hashtable
 for sourceDir in "${!hashtable[@]}"; do
-    az storage blob upload-batch --overwrite --source "$sourceDir" --destination "classifications/"${hashtable[$sourceDir]} --connection-string "$storage_connection" || error_exit "Failed to upload files."
+    az storage blob upload-batch --overwrite --source "$sourceDir" --destination "classifications" --connection-string "$storage_connection" || error_exit "Failed to upload files."
 done
 
 end=$(date +%s)

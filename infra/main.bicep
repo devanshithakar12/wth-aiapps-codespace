@@ -47,6 +47,7 @@ output cosmosDBPrimaryMasterKey string = cosmos.outputs.primaryMasterKey
 output cosmosDBAddress string = cosmos.outputs.uri
 output cosmosDBDatabaseName string = cosmos.outputs.databaseName
 output cosmosDBConnectionString string = cosmos.outputs.connectionString
+output cosmosDBAccount string = cosmos.outputs.cosmosDBAccount
 
 module openai 'modules/openai.bicep' = {
   name: 'openAIDeployment'
@@ -74,6 +75,7 @@ module search 'modules/search.bicep' = {
 
 output searchKey string = search.outputs.primaryKey
 output searchEndpoint string = search.outputs.endpoint
+output searchName string = search.outputs.name
 
 module document 'modules/document.bicep' = {
   name: 'documentDeployment'
@@ -108,6 +110,7 @@ module storage 'modules/storage.bicep' = {
 
 output storagePrimaryKey string = storage.outputs.primaryKey
 output storageConnectionString string = storage.outputs.connectionString
+output name string = storage.outputs.name
 
 module appinsights 'modules/appinsights.bicep' = {
   name: 'appInsightsDeployment'
