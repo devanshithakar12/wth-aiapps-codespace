@@ -98,9 +98,13 @@ example_file="../ContosoAIAppsBackend/local.settings.json.example"
 if [[ ! -f "$example_file" ]]; then
     error_exit "Example settings file not found at $example_file."
 fi
-
-cp "$example_file" "$settings_file"
-
+if [[ -f "$settings_file" ]]; then
+    random_chars=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 5)
+    cp "$settings_file" "${settings_file}-${random_chars}.bak"
+    echo -e "\e[33mWarning: Existing settings file found. Backed up to ${settings_file}-${random_chars}.bak\e[0m"
+else
+    cp "$example_file" "$settings_file"
+fi
 # Populate settings file
 jq --arg openAIKey "$(echo "$outputs" | jq -r '.openAIKey.value')" \
    --arg openAIEndpoint "$(echo "$outputs" | jq -r '.openAIEndpoint.value')" \
@@ -173,7 +177,10 @@ hashtable["../artifacts/contoso-education/F04-Activity-Preferences/"]="f04-activ
 # Iterate over the hashtable
 for sourceDir in "${!hashtable[@]}"; do
     az storage blob upload-batch --overwrite --source "$sourceDir" --destination "classifications" --connection-string "$storage_connection" || error_exit "Failed to upload files."
+    az storage blob upload-batch --overwrite --source "$sourceDir" --destination "${hashtable[$sourceDir]}" --connection-string "$storage_connection" || error_exit "Failed to upload files."
 done
+
+
 
 end=$(date +%s)
 echo -e "\nThe deployment took: $((end - start)) seconds."
