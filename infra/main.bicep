@@ -56,7 +56,7 @@ module openai 'modules/openai.bicep' = {
     location: openAILocation
     name: 'openai-${suffix}'
     deployments: [
-      { name: 'gpt-4',                    version: '1106-Preview' }
+      { name: 'gpt-4o',                    version: '2024-11-20' }
       { name: 'text-embedding-ada-002',   version: '2' }      
     ]    
   }
