@@ -169,9 +169,9 @@ az search service update --name $AZURE_AI_SEARCH --resource-group $RESOURCE_GROU
 declare -A hashtable
 
 # Add key-value pairs to the hashtable
-hashtable["../artifacts/contoso-education/F01-Civics-Geography and Climate/"]="f01-geo-climate"
+hashtable["../artifacts/contoso-education/F01-Civics-Geography and Climate/"]="f01-geography-climate"
 hashtable["../artifacts/contoso-education/F02-Civics-Tourism and Economy/"]="f02-tour-economy"
-hashtable["../artifacts/contoso-education/F03-Civics-Government and Politics/"]="f03-gov-politics"
+hashtable["../artifacts/contoso-education/F03-Civics-Government and Politics/"]="f03-government-politics"
 hashtable["../artifacts/contoso-education/F04-Activity-Preferences/"]="f04-activity-preferences"
 
 # Iterate over the hashtable
