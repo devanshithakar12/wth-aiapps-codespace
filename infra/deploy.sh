@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# Function to display error messages
-function error_exit {
-    echo -e "\e[31mERROR: $1\e[0m"
-    exit 1
-}
+# Include functions
+source ./functions.sh
 
 # Default values
 LOCATION="East US 2"
@@ -23,6 +20,7 @@ while [[ "$#" -gt 0 ]]; do
         --service-principal-password) SERVICE_PRINCIPAL_PASSWORD="$2"; shift ;;
         --openai-location) OPENAI_LOCATION="$2"; shift ;;
         --document-intelligence-location) DOCUMENT_INTELLIGENCE_LOCATION="$2"; shift ;;
+        --skip-local-settings-file) SKIP_LOCAL_SETTINGS_FILE=true; shift ;;
         *) error_exit "Unknown parameter passed: $1" ;;
     esac
     shift
@@ -70,7 +68,7 @@ echo -e "\e[31mIf any parameter is incorrect, abort this script, correct, and tr
 echo -e "It will take around \e[32m15 minutes\e[0m to deploy all resources. You can monitor the progress from the deployments page in the resource group in Azure Portal.\n"
 
 read -p "Press Y to proceed to deploy the resources using these parameters: " proceed
-if [[ "$proceed" != "Y" ]]; then
+if [[ "$proceed" != "Y" && "$proceed" != "y" ]]; then
     echo -e "\e[31mAborting deployment script.\e[0m"
     exit 1
 fi
@@ -89,54 +87,15 @@ result=$(az deployment group create --resource-group "$RESOURCE_GROUP_NAME" --te
 # Extract outputs
 outputs=$(echo "$result" | jq -r '.properties.outputs')
 #echo $outputs
-
-# Create settings file
-echo -e "\n- Creating the settings file:"
-settings_file="../ContosoAIAppsBackend/local.settings.json"
-example_file="../ContosoAIAppsBackend/local.settings.json.example"
-
-if [[ ! -f "$example_file" ]]; then
-    error_exit "Example settings file not found at $example_file."
-fi
-if [[ -f "$settings_file" ]]; then
-    random_chars=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 5)
-    cp "$settings_file" "${settings_file}-${random_chars}.bak"
-    echo -e "\e[33mWarning: Existing settings file found. Backed up to ${settings_file}-${random_chars}.bak\e[0m"
+if [[ "$SKIP_LOCAL_SETTINGS_FILE" == true ]]; then
+    echo -e "\n- Skipping local settings file generation."
 else
-    cp "$example_file" "$settings_file"
+    # Generate local settings file
+    echo -e "\n- Generating local settings file:"
+    generate_local_settings_file
 fi
-# Populate settings file
-jq --arg openAIKey "$(echo "$outputs" | jq -r '.openAIKey.value')" \
-   --arg openAIEndpoint "$(echo "$outputs" | jq -r '.openAIEndpoint.value')" \
-   --arg searchKey "$(echo "$outputs" | jq -r '.searchKey.value')" \
-   --arg searchEndpoint "$(echo "$outputs" | jq -r '.searchEndpoint.value')" \
-   --arg redisHost "$(echo "$outputs" | jq -r '.redisHostname.value')" \
-   --arg redisPassword "$(echo "$outputs" | jq -r '.redisPrimaryKey.value')" \
-   --arg cosmosConnection "$(echo "$outputs" | jq -r '.cosmosDBConnectionString.value')" \
-   --arg cosmosDatabase "$(echo "$outputs" | jq -r '.cosmosDBDatabaseName.value')" \
-   --arg documentEndpoint "$(echo "$outputs" | jq -r '.documentEndpoint.value')" \
-   --arg documentKey "$(echo "$outputs" | jq -r '.documentKey.value')" \
-   --arg webjobsConnection "$(echo "$outputs" | jq -r '.webjobsConnectionString.value')" \
-   --arg storageConnection "$(echo "$outputs" | jq -r '.storageConnectionString.value')" \
-   --arg appInsightsConnection "$(echo "$outputs" | jq -r '.appInsightsConnectionString.value')" \
-   --arg serviceBusConnection "$(echo "$outputs" | jq -r '.serviceBusConnectionString.value')" \
-   '.Values.AZURE_OPENAI_API_KEY = $openAIKey |
-    .Values.AZURE_OPENAI_ENDPOINT = $openAIEndpoint |
-    .Values.AZURE_AI_SEARCH_ADMIN_KEY = $searchKey |
-    .Values.AZURE_AI_SEARCH_ENDPOINT = $searchEndpoint |
-    .Values.REDIS_HOST = $redisHost |
-    .Values.REDIS_PASSWORD = $redisPassword |
-    .Values.COSMOS_CONNECTION = $cosmosConnection |
-    .Values.COSMOS_DATABASE_NAME = $cosmosDatabase |
-    .Values.DOCUMENT_INTELLIGENCE_ENDPOINT = $documentEndpoint |
-    .Values.DOCUMENT_INTELLIGENCE_KEY = $documentKey |
-    .Values.AzureWebJobsStorage = $webjobsConnection |
-    .Values.DOCUMENT_STORAGE = $storageConnection |
-    .Values.APPLICATIONINSIGHTS_CONNECTION_STRING = $appInsightsConnection |
-    .Values.SERVICE_BUS_CONNECTION_STRING = $serviceBusConnection' \
-   "$settings_file" > tmp.json && mv tmp.json "$settings_file"
 
-echo -e "\e[32mSettings file created successfully.\e[0m"
+
 
 # Copy files to Azure Storage
 echo -e "\n- Copying files:"
