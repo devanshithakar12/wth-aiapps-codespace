@@ -39,19 +39,7 @@ fi
 echo -e "\n\t\t\e[32mWHAT THE HACK - AZURE OPENAI APPS\e[0m"
 echo -e "\tcreated with love by the Americas GPS Tech Team!\n"
 
-# Authenticate with Azure
-if [[ "$USE_SERVICE_PRINCIPAL" == true ]]; then
-    if [[ -z "$TENANT_ID" || -z "$SERVICE_PRINCIPAL_ID" || -z "$SERVICE_PRINCIPAL_PASSWORD" ]]; then
-        error_exit "Service Principal ID, Password, and Tenant ID are required for Service Principal authentication."
-    fi
-    if ! az account show > /dev/null 2>&1; then
-        az login --service-principal -u "$SERVICE_PRINCIPAL_ID" -p "$SERVICE_PRINCIPAL_PASSWORD" --tenant "$TENANT_ID" || error_exit "Failed to authenticate using Service Principal."
-    fi
-else
-    if ! az account show > /dev/null 2>&1; then
-        az login || error_exit "Failed to authenticate with Azure."
-    fi
-fi
+authenticate_to_azure
 
 # Set the subscription
 az account set --subscription "$SUBSCRIPTION_ID" || error_exit "Failed to set subscription."

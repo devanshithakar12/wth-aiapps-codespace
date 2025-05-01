@@ -3,6 +3,7 @@
 # Include functions
 source ./functions.sh
 
+authenticate_to_azure
 # Parse arguments
 while [[ "$#" -gt 0 ]]; do
     case $1 in
