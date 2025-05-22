@@ -110,6 +110,9 @@ az cosmosdb update -g $RESOURCE_GROUP_NAME --name $COSMOS_DB_ACCOUNT --public-ne
 az resource update -g $RESOURCE_GROUP_NAME --name $COSMOS_DB_ACCOUNT --resource-type "Microsoft.DocumentDB/databaseAccounts" --set properties.disableLocalAuth=false
 
 az search service update --name $AZURE_AI_SEARCH --resource-group $RESOURCE_GROUP_NAME --public-access enabled --disable-local-auth false
+cosmosdb=$(az cosmosdb show --name $COSMOS_DB_ACCOUNT --resource-group $RESOURCE_GROUP_NAME | jq -r '.id')
+az resource update --ids $cosmosdb --set properties.disableLocalAuth=false --latest-include-preview
+
 #End workaround
 
 
